@@ -6,17 +6,13 @@
 extern GUI_t GUI;
 
 
-static void clearPage(void);
-static void drawPage(void);
-
-
-void clearPage(void)
+static void clearPage(void)
 {
   //LCD_fill(0xBDD7);
 }
 
 
-void drawPage(void)
+static void drawPage(void)
 {
   clearPage();
   
@@ -28,6 +24,12 @@ void drawPage(void)
   {
     SGUI_drawButton(GUI.currentPage, btn);
   }
+}
+
+
+void	SGUI_pageSetActionFunc(unsigned short page, void (*pageActionFunc)(void))
+{
+  GUI.pages[page]->pageActionFunc = pageActionFunc;
 }
 
 

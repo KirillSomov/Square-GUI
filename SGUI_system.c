@@ -1,5 +1,53 @@
 
 #include "SGUI_system.h"
+#include "SGUI_dataTransfer.h"
+
+
+static void SGUI_touchHandler(void)
+{
+  GUI.flag_touch = SGUI_sampleTouch(&GUI.touchPoint.x, &GUI.touchPoint.y);
+}
+
+
+static void SGUI_pageHandler(void)
+{
+  if(GUI.pages[GUI.currentPage]->pageActionFunc != 0)
+  {
+    GUI.pages[GUI.currentPage]->pageActionFunc();
+  }
+}
+
+
+static void SGUI_buttonHandler(void)
+{
+  unsigned short page = GUI.currentPage;
+  Object_Button *button = &GUI.pages[page]->objList.ObjButtonList[0];
+  unsigned short objButAmount = GUI.pages[page]->objList.ObjButtonNum;
+  
+  if(GUI.flag_touch)
+  {
+    GUI.flag_touch = 0;
+    for(unsigned short objButNum = 0; objButNum < objButAmount; objButNum++)
+    {
+      if(button[objButNum].action != 0)
+      {
+        if((GUI.touchPoint.x < button[objButNum].x0) || (GUI.touchPoint.x > button[objButNum].x1))
+          continue;
+        else if((GUI.touchPoint.y < button[objButNum].y0) || (GUI.touchPoint.y > button[objButNum].y1))
+          continue;
+        else
+        {
+          if(button[objButNum].flag_buttonWasClicked == 0)
+          {
+            button[objButNum].action();
+            button[objButNum].flag_buttonWasClicked = 1;
+          }
+          return;
+        }
+      }
+    }
+  }
+}
 
 
 void	SGUI_objectListReset(void)
@@ -10,80 +58,10 @@ void	SGUI_objectListReset(void)
 }
 
 
-void	SGUI_getTouchPoint(void)
-{
-  //GUI.flag_touch = FT6236_checkInt();
-  
-  //GUI.flag_touch = 1;
-  
-  /*if(GUI.flag_touch)
-  {
-    FT6236_get_Tpoint(&FT6236_Tpoint);
-    
-    GUI.touchPoint.X = FT6236_Tpoint.Xt;
-    GUI.touchPoint.Y = FT6236_Tpoint.Yt;
-  }*/
-}
-
-
-void	SGUI_objSetHandlerFunc(unsigned short page, void (*objActionFunc)(void))
-{
-  GUI.pages[page]->objActionFunc = objActionFunc;
-}
-
-
-void	SGUI_objHandler(void)
-{
-  GUI.pages[GUI.currentPage]->objActionFunc();
-}
-
-
-void	SGUI_Handler(unsigned long dT)
+void SGUI_handler(void)
 {		
-  //GUI_objHandler();
-  
-  unsigned short page = GUI.currentPage;
-  Object_Button *button = &GUI.pages[page]->objList.ObjButtonList[0];
-  unsigned short objButAmount = GUI.pages[page]->objList.ObjButtonNum;
-  
-  // Buttons press delay handling
-  for(unsigned short objButNum = 0; objButNum < objButAmount; objButNum++)
-  {	
-    if (button[objButNum].timerVal > 0)
-    {
-      button[objButNum].timerVal -= dT;
-    }
-  }	
-  
-  if(GUI.flag_touch)
-  {			
-    SGUI_getTouchPoint();
-    GUI.flag_touch				=	0;
-    for(unsigned short objButNum = 0; objButNum < objButAmount; objButNum++)
-    {		
-      if((GUI.touchPoint.x < button[objButNum].x0) || (GUI.touchPoint.x > button[objButNum].x1))
-        continue;
-      else if((GUI.touchPoint.y < button[objButNum].y0) || (GUI.touchPoint.y > button[objButNum].y1))
-        continue;
-      else
-      {
-        //if(GUI.objList.ObjButtonList[objButNum].flag_buttonWasClicked == 0)
-        if(button[objButNum].timerVal <= 0)
-        {
-          button[objButNum].action();
-          
-          if(button[objButNum].msDelay != 0)
-          {
-            //GUI.objList.ObjButtonList[objButNum].flag_buttonWasClicked = 1;
-            button[objButNum].timerVal = button[objButNum].msDelay;
-          }
-        }
-        //GUI.flag_touch				=	0;
-        return;
-      }
-    }
-  }
-  
+  SGUI_pageHandler();
+  SGUI_buttonHandler();
   
   #ifdef OBJ_CANVAS_EN
     if(GUI.flag_touch)
@@ -106,4 +84,23 @@ void	SGUI_Handler(unsigned long dT)
       }
     }
   #endif
+}
+
+
+void SGUI_sync(unsigned short dt)
+{
+  for(unsigned short objButNum = 0; objButNum < GUI.pages[GUI.currentPage]->objList.ObjButtonNum; objButNum++)
+  {
+    if(GUI.pages[GUI.currentPage]->objList.ObjButtonList[objButNum].flag_buttonWasClicked == 1)
+    {
+      GUI.pages[GUI.currentPage]->objList.ObjButtonList[objButNum].timerVal += dt;
+      if(GUI.pages[GUI.currentPage]->objList.ObjButtonList[objButNum].timerVal > GUI.pages[GUI.currentPage]->objList.ObjButtonList[objButNum].msDelay)
+      {
+        GUI.pages[GUI.currentPage]->objList.ObjButtonList[objButNum].timerVal = 0;
+        GUI.pages[GUI.currentPage]->objList.ObjButtonList[objButNum].flag_buttonWasClicked = 0;
+      }
+    }
+  }
+
+  SGUI_touchHandler();
 }

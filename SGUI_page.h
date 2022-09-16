@@ -19,10 +19,11 @@ typedef struct
 typedef struct
 {
   Object_List_t objList;
-  void (*objActionFunc)(void);
+  void (*pageActionFunc)(void);
 }Page_t;
 
 
+void SGUI_pageSetActionFunc(unsigned short page, void (*pageActionFunc)(void));
 void SGUI_setPage(unsigned short page);
 
 

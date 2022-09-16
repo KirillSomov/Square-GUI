@@ -12,3 +12,12 @@ void SGUI_drawFilledSquare(unsigned short x0, unsigned short y0, unsigned short 
 {
   LCD_drawFilledSquare(x0, y0, x1, y1, color);
 }
+
+
+bool SGUI_sampleTouch(unsigned short* x, unsigned short* y)
+{
+  return Touch_sampleTouch(x, y);
+
+  // default
+  return false;
+}

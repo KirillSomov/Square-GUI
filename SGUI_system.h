@@ -10,13 +10,13 @@ typedef	struct
 {
   unsigned short	x;
   unsigned short	y;
-}tPoint_t;
+}TouchPoint_t;
 
 
 typedef	struct
 {
   unsigned short flag_touch;
-  tPoint_t touchPoint;
+  TouchPoint_t touchPoint;
   unsigned short currentPage;
   Page_t **pages;
 }GUI_t;
@@ -26,10 +26,8 @@ extern GUI_t GUI;
 
 
 void	SGUI_objectListReset(void);
-void	SGUI_getTouchPoint(void);
-void	SGUI_objSetHandlerFunc(unsigned short page, void (*objActionFunc)(void));
-void	SGUI_objHandler(void);
-void	SGUI_Handler(unsigned long dT);
+void	SGUI_handler(void);
+void	SGUI_sync(unsigned short dt);
 
 
 #endif
