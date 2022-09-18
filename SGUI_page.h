@@ -18,13 +18,18 @@ typedef struct
 
 typedef struct
 {
+  unsigned long lcdPage;
   Object_List_t objList;
   void (*pageActionFunc)(void);
 }Page_t;
 
 
-void SGUI_pageSetActionFunc(unsigned short page, void (*pageActionFunc)(void));
+void SGUI_LinkPageToLcd(unsigned short guiPage, unsigned long lcdPage);
 void SGUI_setPage(unsigned short page);
+void SGUI_drawPage(unsigned short page);
+void SGUI_showPage(unsigned short page);
+void SGUI_clearPage(unsigned short color);
+void SGUI_pageSetActionFunc(unsigned short page, void (*pageActionFunc)(void));
 
 
 #endif

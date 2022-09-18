@@ -1,40 +1,52 @@
 
 #include "SGUI_page.h"
 #include "SGUI_system.h"
+#include "SGUI_dataTransfer.h"
 
 
 extern GUI_t GUI;
 
 
-static void clearPage(void)
+void SGUI_LinkPageToLcd(unsigned short guiPage, unsigned long lcdPage)
 {
-  //LCD_fill(0xBDD7);
+  GUI.pages[guiPage]->lcdPage = lcdPage;
 }
 
 
-static void drawPage(void)
+void SGUI_setPage(unsigned short page)
 {
-  clearPage();
-  
-  for(unsigned short label = 0; label < GUI.pages[GUI.currentPage]->objList.ObjLabelNum; label++)
+  SGUI_setLcdPage(GUI.pages[page]->lcdPage);
+}
+
+
+void SGUI_drawPage(unsigned short page)
+{  
+  for(unsigned short label = 0; label < GUI.pages[page]->objList.ObjLabelNum; label++)
   {
-    SGUI_drawLabel(GUI.currentPage, label);
+    SGUI_drawLabel(page, label);
   }
-  for(unsigned short btn = 0; btn < GUI.pages[GUI.currentPage]->objList.ObjButtonNum; btn++)
+  for(unsigned short btn = 0; btn < GUI.pages[page]->objList.ObjButtonNum; btn++)
   {
-    SGUI_drawButton(GUI.currentPage, btn);
+    SGUI_drawButton(page, btn);
   }
+}
+
+
+void SGUI_showPage(unsigned short page)
+{
+  GUI.currentPage = page;
+  //drawPage();
+  SGUI_showLcdPage(GUI.pages[page]->lcdPage);
+}
+
+
+void SGUI_clearPage(unsigned short color)
+{
+  SGUI_drawFilledSquare(0, 0, 1023, 599, color);
 }
 
 
 void	SGUI_pageSetActionFunc(unsigned short page, void (*pageActionFunc)(void))
 {
   GUI.pages[page]->pageActionFunc = pageActionFunc;
-}
-
-
-void SGUI_setPage(unsigned short page)
-{
-  GUI.currentPage = page;
-  drawPage();
 }

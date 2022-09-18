@@ -6,12 +6,13 @@
 #include "stdbool.h"
 
 
+void SGUI_setLcdPage(unsigned long page);
+void SGUI_showLcdPage(unsigned long page);
+
 void SGUI_drawSquare(unsigned short x0, unsigned short y0, unsigned short x1, unsigned short y1, unsigned short color);
 void SGUI_drawFilledSquare(unsigned short x0, unsigned short y0, unsigned short x1, unsigned short y1, unsigned short color);
 
 bool SGUI_sampleTouch(unsigned short* x, unsigned short* y);
-
-
 
 
 #endif
