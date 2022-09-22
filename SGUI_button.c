@@ -12,7 +12,10 @@ void	SGUI_drawButton(unsigned short page, unsigned short	buttonId)
 {
   Object_Button *btn = &GUI.pages[page]->objList.ObjButtonList[buttonId];
   
-   SGUI_drawFilledFrame(btn->x0, btn->y0, btn->x1, btn->y1, btn->frameWidth, btn->frameColor, btn->buttonColor);
+   SGUI_drawFilledFrame(btn->x0, btn->y0,
+                        btn->x1, btn->y1,
+                        btn->rx, btn->ry,
+                        btn->frameWidth, btn->frameColor, btn->buttonColor);
   
   /*if(btn->str != 0)
     btn->textLenght = LCD_printString(btn->X0+btn->textMarginX, btn->Y0+btn->textMarginY, btn->str, btn->textColor, btn->fontInfoStruct);
@@ -24,6 +27,7 @@ void	SGUI_drawButton(unsigned short page, unsigned short	buttonId)
 void	SGUI_createButton(unsigned short page,
                       unsigned short	x0,	unsigned short	y0,
                       unsigned short	x1,	unsigned short	y1,
+                      unsigned short	rx, unsigned short	ry,
                       unsigned short	frameWidth,
                       unsigned short	buttonColor,
                       unsigned short	frameColor,
@@ -42,6 +46,8 @@ void	SGUI_createButton(unsigned short page,
   btn->y0	=	y0;
   btn->x1	=	x1;
   btn->y1	=	y1;
+  btn->rx = rx;
+  btn->ry = ry;
   btn->frameWidth						=	frameWidth;
   btn->buttonColor						=	buttonColor;
   btn->frameColor					=	frameColor;
@@ -95,13 +101,10 @@ void	SGUI_buttonChangeColor(unsigned short page,
   
   btn->buttonColor = buttonColor;
   
-  SGUI_drawFilledFrame(btn->x0,
-                      btn->y0,
-                      btn->x1,
-                      btn->y1,
-                      btn->frameWidth,
-                      btn->frameColor,
-                      btn->buttonColor);
+  SGUI_drawFilledFrame(btn->x0, btn->y0,
+                       btn->x1, btn->y1,
+                       btn->rx, btn->ry,
+                       btn->frameWidth, btn->frameColor, btn->buttonColor);
   
   /*if(btn->str != 0)
     GUI_buttonChangeText(page, buttonNum, btn->str, btn->textColor, btn->fontInfoStruct);*/

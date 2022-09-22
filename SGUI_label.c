@@ -10,9 +10,12 @@ extern GUI_t GUI;
 
 void	SGUI_drawLabel(unsigned short page, unsigned short	labelId)
 {
-  Object_Label *label = &GUI.pages[page]->objList.ObjLabelList[labelId];  
+  Object_Label *label = &GUI.pages[page]->objList.ObjLabelList[labelId];
   
-  SGUI_drawFilledFrame(label->x0, label->y0, label->x1, label->y1, label->frameWidth, label->frameColor, label->labelColor);
+  SGUI_drawFilledFrame(label->x0, label->y0,
+                       label->x1, label->y1,
+                       label->rx, label->ry,
+                       label->frameWidth, label->frameColor, label->labelColor);
   
   /*if(label->str != 0)
     label->textLenght = LCD_printString(label->X0+label->textMarginX, label->Y0+label->textMarginY, label->str, label->textColor, label->fontInfoStruct);
@@ -24,6 +27,7 @@ void	SGUI_drawLabel(unsigned short page, unsigned short	labelId)
 void	SGUI_createLabel(unsigned short page,
                       unsigned short	x0,	unsigned short	y0,
                       unsigned short	x1,	unsigned short	y1,
+                      unsigned short	rx, unsigned short	ry,
                       unsigned short	frameWidth,
                       unsigned short	labelColor,
                       unsigned short	frameColor,
@@ -40,6 +44,8 @@ void	SGUI_createLabel(unsigned short page,
   label->y0	=	y0;
   label->x1	=	x1;
   label->y1	=	y1;
+  label->rx = rx;
+  label->ry = ry;
   label->frameWidth					=	frameWidth;
   label->labelColor				=	labelColor;
   label->frameColor			=	frameColor;
@@ -118,13 +124,10 @@ void	SGUI_labelChangeColor(unsigned short page,
   
   label->labelColor = labelColor;
   
-  SGUI_drawFilledFrame(label->x0,
-                      label->y0,
-                      label->x1,
-                      label->y1,
-                      label->frameWidth,
-                      label->frameColor,
-                      label->labelColor);
+  SGUI_drawFilledFrame(label->x0, label->y0,
+                       label->x1, label->y1,
+                       label->rx, label->ry,
+                       label->frameWidth, label->frameColor, label->labelColor);
   
   /*if(label->str != 0)
     GUI_labelChangeText(page, labelNum, label->str,

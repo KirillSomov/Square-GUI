@@ -9,6 +9,8 @@ typedef struct
   unsigned short	y0;
   unsigned short	x1;
   unsigned short	y1;
+  unsigned short	rx;
+  unsigned short	ry;
   unsigned short	frameWidth;
   unsigned short	buttonColor;
   unsigned short	frameColor;
@@ -32,6 +34,7 @@ void	SGUI_drawButton(unsigned short page, unsigned short	buttonId);
 void	SGUI_createButton(unsigned short page,
                       unsigned short	x0,	unsigned short	y0,
                       unsigned short	x1,	unsigned short	y1,
+                      unsigned short	rx,	unsigned short	ry,
                       unsigned short	frameWidth,
                       unsigned short	buttonColor,
                       unsigned short	frameColor,

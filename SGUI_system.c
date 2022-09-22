@@ -50,6 +50,38 @@ static void SGUI_buttonHandler(void)
 }
 
 
+/*static void SGUI_pictureHandler(void)
+{
+  unsigned short page = GUI.currentPage;
+  Object_Picture *pic = &GUI.pages[page]->objList.ObjPictureList[0];
+  unsigned short objPicAmount = GUI.pages[page]->objList.ObjPictureNum;
+  
+  if(GUI.flag_touch)
+  {
+    GUI.flag_touch = 0;
+    for(unsigned short objPicNum = 0; objPicNum < objPicAmount; objPicNum++)
+    {
+      if(pic[objPicNum].action != 0)
+      {
+        if((GUI.touchPoint.x < pic[objPicNum].x) || (GUI.touchPoint.x > (pic[objPicNum].x+pic[objPicNum].w)))
+          continue;
+        else if((GUI.touchPoint.y < pic[objPicNum].y) || (GUI.touchPoint.y > (pic[objPicNum].y+pic[objPicNum].h)))
+          continue;
+        else
+        {
+          if(pic[objPicNum].flag_picWasClicked == 0)
+          {
+            pic[objPicNum].action();
+            pic[objPicNum].flag_picWasClicked = 1;
+          }
+          return;
+        }
+      }
+    }
+  }
+}*/
+
+
 void	SGUI_objectListReset(void)
 {
   /*GUI.objList.ObjLabelNum 		= 0;

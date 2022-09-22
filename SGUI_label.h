@@ -9,6 +9,8 @@ typedef struct
   unsigned short	y0;
   unsigned short	x1;
   unsigned short	y1;
+  unsigned short	rx;
+  unsigned short	ry;
   unsigned short	frameWidth;
   unsigned short	labelColor;
   unsigned short	frameColor;
@@ -27,6 +29,7 @@ void	SGUI_drawLabel(unsigned short page, unsigned short	labelId);
 void	SGUI_createLabel(unsigned short page,
                       unsigned short	x0,	unsigned short	y0,
                       unsigned short	x1,	unsigned short	y1,
+                      unsigned short	rx, unsigned short	ry,
                       unsigned short	frameWidth,
                       unsigned short	labelColor,
                       unsigned short	frameColor,

@@ -29,6 +29,10 @@ void SGUI_drawPage(unsigned short page)
   {
     SGUI_drawButton(page, btn);
   }
+  for(unsigned short pic = 0; pic < GUI.pages[page]->objList.ObjPictureNum; pic++)
+  {
+    SGUI_drawPicture(page, pic);
+  }
 }
 
 
@@ -42,7 +46,7 @@ void SGUI_showPage(unsigned short page)
 
 void SGUI_clearPage(unsigned short color)
 {
-  SGUI_drawFilledSquare(0, 0, 1023, 599, color);
+  SGUI_LCD_drawFilledSquare(0, 0, 1023, 599, 0, 0, color);
 }
 
 
