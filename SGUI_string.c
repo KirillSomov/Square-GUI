@@ -10,26 +10,23 @@ void SGUI_printString(char* string,
                       unsigned short size,
                       unsigned short backgroundColor, unsigned short textColor)
 {
-  char *nl;
-  nl = strchr(string, '\n');
-  if(!nl)
+  char *nlL = string;
+  char *nlR = 0;
+  nlR = strchr(string, '\n');
+  if(!nlR)
   {
     SGUI_LCD_printString(string, x, y, size, backgroundColor, textColor);
   }
-  while(nl)
+  while(nlR)
   {
-    strncpy(strBuf, string, nl-string);
-    strBuf[(nl-string)+1] = '\0';
+    strncpy(strBuf, nlL, nlR-nlL);
+    strBuf[(nlR-nlL)+1] = '\0';
     SGUI_LCD_printString(strBuf, x, y, size, backgroundColor, textColor);
+    nlL = nlR + 1;
     y+= size;
-    if(strchr(nl+1, '\n'))
+    if(!(nlR = strchr(nlL, '\n')))
     {
-      nl = strchr(nl+1, '\n');
-    }
-    else
-    {
-      SGUI_LCD_printString(nl+1, x, y, size, backgroundColor, textColor);
-      nl = 0;
+      SGUI_LCD_printString(nlL, x, y, size, backgroundColor, textColor);
     }
   }
 }
