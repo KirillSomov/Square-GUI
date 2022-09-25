@@ -6,6 +6,10 @@
 #include "stdbool.h"
 
 
+#define FONT_SIZE_24 24
+#define FONT_SIZE_48 48
+
+
 void SGUI_setLcdPage(unsigned long page);
 void SGUI_showLcdPage(unsigned long page);
 
@@ -21,6 +25,11 @@ void SGUI_LCD_drawPicture(const unsigned char* picture,
                           unsigned long page,
                           unsigned short x, unsigned short y,
                           unsigned short w, unsigned short h);
+
+void SGUI_LCD_printString(char* string,
+                          unsigned short x, unsigned short y,
+                          unsigned short size,
+                          unsigned short backgroundColor, unsigned short textColor);
 
 bool SGUI_sampleTouch(unsigned short* x, unsigned short* y);
 
