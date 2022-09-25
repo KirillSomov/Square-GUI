@@ -21,7 +21,7 @@ Page_t *pagesStorage[pagesAmount] = {NULL};
 
 
 #define SGUI_guiStorageCreate();\
-GUI_t GUI = {0, {0, 0}, 0, pagesStorage};
+GUI_t GUI = {0, 0, {0, 0}, 0, pagesStorage};
 
 
 void GUI_pagesStorageInit(void);

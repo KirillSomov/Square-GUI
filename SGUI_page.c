@@ -41,6 +41,7 @@ void SGUI_showPage(unsigned short page)
   GUI.currentPage = page;
   //drawPage();
   SGUI_showLcdPage(GUI.pages[page]->lcdPage);
+  SGUI_idle(1000);
 }
 
 

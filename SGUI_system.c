@@ -90,6 +90,12 @@ void	SGUI_objectListReset(void)
 }
 
 
+void	SGUI_idle(unsigned short dt)
+{
+  GUI.idle = (signed short)dt;
+}
+
+
 void SGUI_handler(void)
 {		
   SGUI_pageHandler();
@@ -121,6 +127,16 @@ void SGUI_handler(void)
 
 void SGUI_sync(unsigned short dt)
 {
+  if(GUI.idle > 0)
+  {
+    GUI.idle -= (signed short)dt;
+    if(GUI.idle <= 0)
+    {
+      GUI.idle = 0;
+      SGUI_touchHandler();
+    }
+  }
+
   for(unsigned short objButNum = 0; objButNum < GUI.pages[GUI.currentPage]->objList.ObjButtonNum; objButNum++)
   {
     if(GUI.pages[GUI.currentPage]->objList.ObjButtonList[objButNum].flag_buttonWasClicked == 1)
@@ -134,5 +150,8 @@ void SGUI_sync(unsigned short dt)
     }
   }
 
-  SGUI_touchHandler();
+  if(GUI.idle == 0)
+  {
+    SGUI_touchHandler();
+  }
 }

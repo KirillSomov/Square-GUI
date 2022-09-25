@@ -15,6 +15,7 @@ typedef	struct
 
 typedef	struct
 {
+  signed short idle;
   unsigned short flag_touch;
   TouchPoint_t touchPoint;
   unsigned short currentPage;
@@ -26,6 +27,7 @@ extern GUI_t GUI;
 
 
 void	SGUI_objectListReset(void);
+void	SGUI_idle(unsigned short dt);
 void	SGUI_handler(void);
 void	SGUI_sync(unsigned short dt);
 
