@@ -11,6 +11,7 @@ void SGUI_drawFrame(unsigned short x0, unsigned short y0,
   for(unsigned short i = 0; i < frameWidth; i++)
   {
     SGUI_LCD_drawSquare(x0+i, y0+i, x1-i, y1-i, rx, ry, frameColor);
+    SGUI_LCD_drawSquare(x0+i, y0+i, x1-i, y1-i, rx+2, ry+2, frameColor);
   }
 }
 
