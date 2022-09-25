@@ -15,11 +15,13 @@ void	SGUI_drawPicture(unsigned short page, unsigned short	picId)
 
   SGUI_LCD_drawPicture(pic->picture, GUI.pages[page]->lcdPage,
                        pic->x, pic->y, pic->w, pic->h);
-
-  SGUI_drawFrame(pic->x-pic->frameWidth, pic->y-pic->frameWidth,
-                 pic->x+pic->w+pic->frameWidth-1, pic->x+pic->h+pic->frameWidth-1,
-                 pic->rx, pic->ry,
-                 pic->frameWidth, pic->frameColor);
+  if(pic->frameWidth > 0)
+  {
+    SGUI_drawFrame(pic->x - pic->frameWidth, pic->y - pic->frameWidth,
+                   pic->x + pic->w + pic->frameWidth - 1, pic->y + pic->h + pic->frameWidth - 1,
+                   pic->rx, pic->ry,
+                   pic->frameWidth, pic->frameColor);
+  }
 }
 
 
