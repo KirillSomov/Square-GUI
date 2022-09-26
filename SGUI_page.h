@@ -6,6 +6,7 @@
 #include "SGUI_label.h"
 #include "SGUI_button.h"
 #include "SGUI_picture.h"
+#include "SGUI_canvas.h"
 
 
 typedef struct
@@ -13,9 +14,11 @@ typedef struct
   unsigned short	ObjLabelNum;
   unsigned short	ObjButtonNum;
   unsigned short	ObjPictureNum;
+  unsigned short	ObjCanvasNum;
   Object_Label*		ObjLabelList;
   Object_Button*	ObjButtonList;
   Object_Picture*	ObjPictureList;
+  Object_Canvas*  ObjCanvasList;
 }Object_List_t;
 
 

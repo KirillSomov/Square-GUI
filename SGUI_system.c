@@ -26,7 +26,6 @@ static void SGUI_buttonHandler(void)
   
   if(GUI.flag_touch)
   {
-    GUI.flag_touch = 0;
     for(unsigned short objButNum = 0; objButNum < objButAmount; objButNum++)
     {
       if(button[objButNum].action != 0)
@@ -42,6 +41,7 @@ static void SGUI_buttonHandler(void)
             button[objButNum].action();
             button[objButNum].flag_buttonWasClicked = 1;
           }
+          GUI.flag_touch = 0;
           return;
         }
       }
@@ -82,6 +82,31 @@ static void SGUI_buttonHandler(void)
 }*/
 
 
+static void SGUI_canvasHandler(void)
+{
+  unsigned short page = GUI.currentPage;
+  Object_Canvas *canvas = &GUI.pages[page]->objList.ObjCanvasList[0];
+  unsigned short objCanvasAmount = GUI.pages[page]->objList.ObjCanvasNum;
+  
+  if(GUI.flag_touch)
+  {
+    for(unsigned short ObjCanvasId = 0; ObjCanvasId < objCanvasAmount; ObjCanvasId++)
+    {
+      if((GUI.touchPoint.x < canvas[ObjCanvasId].x0 + canvas[ObjCanvasId].frameWidth) || (GUI.touchPoint.x > canvas[ObjCanvasId].x1 - canvas[ObjCanvasId].frameWidth))
+        continue;
+      else if((GUI.touchPoint.y < canvas[ObjCanvasId].y0 + canvas[ObjCanvasId].frameWidth) || (GUI.touchPoint.y > canvas[ObjCanvasId].y1 - canvas[ObjCanvasId].frameWidth))
+        continue;
+      else
+      {
+        SGUI_canvasDrawPoint(page, ObjCanvasId);
+        GUI.flag_touch = 0;
+        return;
+      }
+    }
+  }
+}
+
+
 void	SGUI_objectListReset(void)
 {
   /*GUI.objList.ObjLabelNum 		= 0;
@@ -96,32 +121,19 @@ void	SGUI_idle(unsigned short dt)
 }
 
 
+bool SGUI_getSampleTouch(unsigned short* x, unsigned short* y)
+{
+  *x = GUI.touchPoint.x;
+  *y = GUI.touchPoint.y;
+  return GUI.flag_touch;
+}
+
+
 void SGUI_handler(void)
 {		
   SGUI_pageHandler();
   SGUI_buttonHandler();
-  
-  #ifdef OBJ_CANVAS_EN
-    if(GUI.flag_touch)
-    {
-      for(unsigned short objCanvasNum = 0; objCanvasNum < OBJ_CANVAS_AMOUNT; objCanvasNum++)
-      {
-        if((GUI.touchPoint.X < GUI.objList.ObjCanvasList[objCanvasNum].X0) || (GUI.touchPoint.X > GUI.objList.ObjCanvasList[objCanvasNum].X1))
-          continue;
-        else if((GUI.touchPoint.Y < GUI.objList.ObjCanvasList[objCanvasNum].Y0) || (GUI.touchPoint.Y > GUI.objList.ObjCanvasList[objCanvasNum].Y1))
-          continue;
-        else
-        {
-          GUI_drawPoint(GUI.objList.ObjCanvasList[objCanvasNum].penWeight, GUI.objList.ObjCanvasList[objCanvasNum].penColor);
-          
-          if(GUI.objList.ObjCanvasList[objCanvasNum].action != 0)
-            GUI.objList.ObjCanvasList[objCanvasNum].action();
-          GUI.flag_touch				=	0;
-          return;
-        }
-      }
-    }
-  #endif
+  SGUI_canvasHandler();
 }
 
 

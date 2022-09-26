@@ -33,6 +33,10 @@ void SGUI_drawPage(unsigned short page)
   {
     SGUI_drawPicture(page, pic);
   }
+  for(unsigned short canvas = 0; canvas < GUI.pages[page]->objList.ObjCanvasNum; canvas++)
+  {
+    SGUI_drawCanvas(page, canvas);
+  }
 }
 
 

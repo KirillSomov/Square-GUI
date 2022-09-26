@@ -11,6 +11,7 @@
 #include "SGUI_label.h"
 #include "SGUI_button.h"
 #include "SGUI_picture.h"
+#include "SGUI_canvas.h"
 
 
 #endif

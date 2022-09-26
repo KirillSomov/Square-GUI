@@ -4,6 +4,7 @@
 
 
 #include "SGUI_page.h"
+#include "stdbool.h"
 
 
 typedef	struct
@@ -26,10 +27,11 @@ typedef	struct
 extern GUI_t GUI;
 
 
-void	SGUI_objectListReset(void);
-void	SGUI_idle(unsigned short dt);
-void	SGUI_handler(void);
-void	SGUI_sync(unsigned short dt);
+void SGUI_objectListReset(void);
+void SGUI_idle(unsigned short dt);
+bool SGUI_getSampleTouch(unsigned short* x, unsigned short* y);
+void SGUI_handler(void);
+void SGUI_sync(unsigned short dt);
 
 
 #endif

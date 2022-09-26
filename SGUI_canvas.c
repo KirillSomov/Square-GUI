@@ -1,92 +1,85 @@
 
 #include "SGUI_canvas.h"
+#include "SGUI_system.h"
+#include "SGUI_page.h"
+#include "SGUI_primitives.h"
 
 
-#ifdef USE_CANVAS
+extern GUI_t GUI;
 
 
-// ������� �����
-void	GUI_createCanvas(uint16_t		X0,	uint16_t	X1,			// X-���������� ������
-                      uint16_t		Y0,	uint16_t	Y1,			// Y-���������� ������
-                      uint16_t		border,								// ������ ������
-                      uint16_t		mainColor,						// �������� ���� ������
-                      uint16_t		borderColor,					// ���� ������
-                      Pen_Weight	penWeight,						// ������� ����
-                      uint16_t		penColor,							// ���� ����
-                      void				(*action)(void))			// ������� ���������� � ������
+void SGUI_drawCanvas(unsigned short page, unsigned short	canvasId)
 {
-  GUI.objList.ObjCanvasList[GUI.objList.ObjCanvasNum].X0	=	X0;
-  GUI.objList.ObjCanvasList[GUI.objList.ObjCanvasNum].X1	=	X1;
-  GUI.objList.ObjCanvasList[GUI.objList.ObjCanvasNum].Y0	=	Y0;
-  GUI.objList.ObjCanvasList[GUI.objList.ObjCanvasNum].Y1	=	Y1;
-  GUI.objList.ObjCanvasList[GUI.objList.ObjCanvasNum].border			=	border;
-  GUI.objList.ObjCanvasList[GUI.objList.ObjCanvasNum].mainColor		=	mainColor;
-  GUI.objList.ObjCanvasList[GUI.objList.ObjCanvasNum].borderColor	=	borderColor;
-  GUI.objList.ObjCanvasList[GUI.objList.ObjCanvasNum].penWeight		=	penWeight;
-  GUI.objList.ObjCanvasList[GUI.objList.ObjCanvasNum].penColor		=	penColor;
-  GUI.objList.ObjCanvasList[GUI.objList.ObjCanvasNum].action			=	action;
+  Object_Canvas *canvas = &GUI.pages[page]->objList.ObjCanvasList[canvasId];
   
-  GUI_drawFilledFrame(X0, X1, Y0, Y1, border, mainColor, borderColor);		// ��������� ������
+  SGUI_drawFilledFrame(canvas->x0, canvas->y0,
+                       canvas->x1, canvas->y1,
+                       canvas->rx, canvas->ry,
+                       canvas->frameWidth, canvas->frameColor, canvas->canvasColor);
+}
+
+
+void SGUI_createCanvas(unsigned short page,
+                       unsigned short	x0,	unsigned short	y0,
+                       unsigned short	x1,	unsigned short	y1,
+                       unsigned short	rx,	unsigned short	ry,
+                       unsigned short	frameWidth,
+                       unsigned short	canvasColor,
+                       unsigned short	frameColor,
+                       unsigned short	penWeight,
+                       unsigned short	penColor,
+                       void (*action)(void))
+{
+  Object_Canvas *canvas = &GUI.pages[page]->objList.ObjCanvasList[GUI.pages[page]->objList.ObjCanvasNum];
+
+  canvas->x0 = x0;
+  canvas->y0 = y0;
+  canvas->x1 = x1;
+  canvas->y1 = y1;
+  canvas->rx = rx;
+  canvas->ry = ry;
+  canvas->frameWidth = frameWidth;
+  canvas->canvasColor = canvasColor;
+  canvas->frameColor = frameColor;
+  canvas->penWeight = penWeight;
+  canvas->penColor = penColor;
+  canvas->action = action;
   
-  GUI.objList.ObjCanvasNum++;
+  GUI.pages[page]->objList.ObjCanvasNum++;
 }
 
-// �������� �����
-void	GUI_canvasClear(uint8_t canvasNum)
+
+void SGUI_canvasClear(unsigned short page, unsigned short canvasId)
 {
-  LCD_drawFilledRectangle(GUI.objList.ObjCanvasList[canvasNum].X0+GUI.objList.ObjCanvasList[canvasNum].border,
-                          GUI.objList.ObjCanvasList[canvasNum].X1-GUI.objList.ObjCanvasList[canvasNum].border,
-                          GUI.objList.ObjCanvasList[canvasNum].Y0+GUI.objList.ObjCanvasList[canvasNum].border,
-                          GUI.objList.ObjCanvasList[canvasNum].Y1-GUI.objList.ObjCanvasList[canvasNum].border,
-                          0xFFFF);
+  Object_Canvas *canvas = &GUI.pages[page]->objList.ObjCanvasList[canvasId];
+  
+  SGUI_drawFilledFrame(canvas->x0 + canvas->frameWidth, canvas->y0 + canvas->frameWidth,
+                       canvas->x1 - canvas->frameWidth, canvas->y1 - canvas->frameWidth,
+                       canvas->rx, canvas->ry,
+                       0, 0, canvas->canvasColor);
 }
 
-// ������� ���� ���� ������
-void	GUI_canvasChangePenColor(uint8_t canvasNum, uint16_t newPenColor)
+
+void SGUI_canvasChangePenColor(unsigned short page,
+                               unsigned short canvasId,
+                               unsigned short color)
 {
-  GUI.objList.ObjCanvasList[canvasNum].penColor	=	newPenColor;
+  GUI.pages[page]->objList.ObjCanvasList[canvasId].penColor = color;
 }
 
-// 
-void	GUI_canvasSetPenEraser(uint8_t canvasNum)
+
+void SGUI_canvasSetPenEraser(unsigned short page, unsigned short	canvasId)
 {
-  GUI.objList.ObjCanvasList[canvasNum].penColor	=	0xFFFF;
+  GUI.pages[page]->objList.ObjCanvasList[canvasId].penColor = GUI.pages[page]->objList.ObjCanvasList[canvasId].canvasColor;
 }
 
-// ��������� ����� �� ������
-void	GUI_drawPoint(Pen_Weight penWeight, uint16_t pointColor)
+
+void SGUI_canvasDrawPoint(unsigned short page, unsigned short	canvasId)
 {
-  // ��������� �����
-  switch(penWeight)
-  {
-    case Pen_fine:
-      LCD_drawPixel(GUI.touchPoint.X, GUI.touchPoint.Y, pointColor);
-      break;
-    case Pen_small:
-      LCD_drawFilledRectangle(GUI.touchPoint.X-1, GUI.touchPoint.X+1, GUI.touchPoint.Y-1, GUI.touchPoint.Y+1, pointColor);
-      break;
-    case Pen_medium:
-      LCD_drawFilledRectangle(GUI.touchPoint.X-2, GUI.touchPoint.X-2, GUI.touchPoint.Y-1, GUI.touchPoint.Y+1, pointColor);
-      LCD_drawFilledRectangle(GUI.touchPoint.X-1, GUI.touchPoint.X+1, GUI.touchPoint.Y-2, GUI.touchPoint.Y+2, pointColor);
-      LCD_drawFilledRectangle(GUI.touchPoint.X+2, GUI.touchPoint.X+1, GUI.touchPoint.Y-2, GUI.touchPoint.Y-2, pointColor);
-      break;
-    case Pen_broad:
-      LCD_drawFilledRectangle(GUI.touchPoint.X-3, GUI.touchPoint.X-3, GUI.touchPoint.Y-1, GUI.touchPoint.Y+1, pointColor);
-      LCD_drawFilledRectangle(GUI.touchPoint.X-2, GUI.touchPoint.X-2, GUI.touchPoint.Y-2, GUI.touchPoint.Y+2, pointColor);
-      LCD_drawFilledRectangle(GUI.touchPoint.X-1, GUI.touchPoint.X+1, GUI.touchPoint.Y-3, GUI.touchPoint.Y+3, pointColor);
-      LCD_drawFilledRectangle(GUI.touchPoint.X+2, GUI.touchPoint.X+2, GUI.touchPoint.Y-2, GUI.touchPoint.Y+2, pointColor);
-      LCD_drawFilledRectangle(GUI.touchPoint.X+3, GUI.touchPoint.X+3, GUI.touchPoint.Y-1, GUI.touchPoint.Y+1, pointColor);
-      break;
-    case Pen_extraBroad:
-      LCD_drawFilledRectangle(GUI.touchPoint.X-6, GUI.touchPoint.X-6, GUI.touchPoint.Y-2, GUI.touchPoint.Y+2, pointColor);
-      LCD_drawFilledRectangle(GUI.touchPoint.X-5, GUI.touchPoint.X-5, GUI.touchPoint.Y-4, GUI.touchPoint.Y+4, pointColor);
-      LCD_drawFilledRectangle(GUI.touchPoint.X-4, GUI.touchPoint.X-3, GUI.touchPoint.Y-5, GUI.touchPoint.Y+5, pointColor);
-      LCD_drawFilledRectangle(GUI.touchPoint.X-2, GUI.touchPoint.X+2, GUI.touchPoint.Y-6, GUI.touchPoint.Y+6, pointColor);
-      LCD_drawFilledRectangle(GUI.touchPoint.X+3, GUI.touchPoint.X+4, GUI.touchPoint.Y-5, GUI.touchPoint.Y+5, pointColor);
-      LCD_drawFilledRectangle(GUI.touchPoint.X+5, GUI.touchPoint.X+5, GUI.touchPoint.Y-4, GUI.touchPoint.Y+4, pointColor);
-      LCD_drawFilledRectangle(GUI.touchPoint.X+6, GUI.touchPoint.X+6, GUI.touchPoint.Y-2, GUI.touchPoint.Y+2, pointColor);
-      break;
-  }		
-}
+  Object_Canvas *canvas = &GUI.pages[page]->objList.ObjCanvasList[canvasId];
+  unsigned short x = 0;
+  unsigned short y = 0;
 
-#endif
+  SGUI_getSampleTouch(&x, &y);
+  SGUI_LCD_drawFilledCircle(x, y, canvas->penWeight, canvas->penColor);
+}

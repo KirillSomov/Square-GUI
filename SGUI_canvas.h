@@ -2,58 +2,62 @@
 #ifndef SGUI_CANVAS_H
 #define SGUI_CANVAS_H
 
-#ifdef USE_CANVAS
 
-#include "stm32f4xx.h"
-
-
-// ������� ����
 typedef enum
 {
-  Pen_fine	=	0,
-  Pen_small,
-  Pen_medium,
-  Pen_broad,
-  Pen_extraBroad
+  Pen_fine = 1,
+  Pen_small = 2,
+  Pen_medium = 4,
+  Pen_broad = 8,
+  Pen_extraBroad = 16
 }Pen_Weight;
- 
 
-// ��������� ������� �����
+
 typedef struct
 {
-  uint16_t		X0;						// ���������� ������
-  uint16_t		X1;
-  uint16_t		Y0;
-  uint16_t		Y1;
-  uint16_t		border;				// ������ ������
-  uint16_t		mainColor;		// ���� ������
-  uint16_t		borderColor;	// ���� ������
-  uint16_t		penColor;			// ���� ����
-  Pen_Weight	penWeight;		// ������� ����
-  
-  // �������� �� ������� �� ���� ������
+  unsigned short	x0;
+  unsigned short	y0;
+  unsigned short	x1;
+  unsigned short	y1;
+}CanvasActiveWindow_t;
+
+
+typedef struct
+{
+  unsigned short	x0;
+  unsigned short	y0;
+  unsigned short	x1;
+  unsigned short	y1;
+  unsigned short	rx;
+  unsigned short	ry;  
+  unsigned short	frameWidth;
+  unsigned short	canvasColor;
+  unsigned short	frameColor;
+  unsigned short	penColor;
+  Pen_Weight	penWeight;
+  CanvasActiveWindow_t activeWindow;
+
   void (*action)(void);
 }Object_Canvas;
  
  
-void	GUI_createCanvas(uint8_t page,
-                      uint16_t		X0,	uint16_t	X1,			// X-���������� ������	// ������� �����
-                      uint16_t		Y0,	uint16_t	Y1,			// Y-���������� ������
-                      uint16_t		border,								// ������ ������
-                      uint16_t		mainColor,						// �������� ���� ������
-                      uint16_t		borderColor,					// ���� ������
-                      Pen_Weight	penWeight,						// ������� ����
-                      uint16_t		penColor,							// ���� ����
-                      void				(*action)(void));			// ������� ���������� � ������
-void	GUI_canvasClear(uint8_t page, uint8_t canvasNum);								// �������� �����
-void	GUI_canvasChangePenColor(uint8_t page,
-                                uint8_t	canvasNum,
-                              uint16_t	newPenColor);		// ������� ���� ���� ������
-void	GUI_canvasSetPenEraser(uint8_t page, uint8_t	canvasNum);				//
-void	GUI_canvasDrawPoint(uint8_t page,
-                            Pen_Weight	penWeight,
-                            uint16_t	pointColor);			// ��������� ����� �� ������
+void SGUI_drawCanvas(unsigned short page, unsigned short	canvasId);
+void SGUI_createCanvas(unsigned short page,
+                       unsigned short	x0,	unsigned short	y0,
+                       unsigned short	x1,	unsigned short	y1,
+                       unsigned short	rx,	unsigned short	ry,
+                       unsigned short	frameWidth,
+                       unsigned short	canvasColor,
+                       unsigned short	frameColor,
+                       unsigned short	penWeight,
+                       unsigned short	penColor,
+                       void (*action)(void));
+void SGUI_canvasClear(unsigned short page, unsigned short canvasId);
+void SGUI_canvasChangePenColor(unsigned short page,
+                               unsigned short canvasId,
+                               unsigned short color);
+void SGUI_canvasSetPenEraser(unsigned short page, unsigned short	canvasId);
+void SGUI_canvasDrawPoint(unsigned short page, unsigned short	canvasId);
 
-#endif
 
 #endif
