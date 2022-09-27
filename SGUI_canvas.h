@@ -36,7 +36,7 @@ typedef struct
   unsigned short	penColor;
   Pen_Weight	penWeight;
   CanvasActiveWindow_t activeWindow;
-
+  signed short idle;
   void (*action)(void);
 }Object_Canvas;
  
@@ -53,11 +53,15 @@ void SGUI_createCanvas(unsigned short page,
                        unsigned short	penColor,
                        void (*action)(void));
 void SGUI_canvasClear(unsigned short page, unsigned short canvasId);
-void SGUI_canvasChangePenColor(unsigned short page,
-                               unsigned short canvasId,
-                               unsigned short color);
+void SGUI_canvasSetPenColor(unsigned short page,
+                            unsigned short canvasId,
+                            unsigned short color);
+void SGUI_canvasSetPenWeight(unsigned short page,
+                             unsigned short canvasId,
+                             unsigned short weight);
 void SGUI_canvasSetPenEraser(unsigned short page, unsigned short	canvasId);
 void SGUI_canvasDrawPoint(unsigned short page, unsigned short	canvasId);
+void SGUI_canvasIdle(unsigned short page, unsigned short	canvasId, unsigned short dt);
 
 
 #endif

@@ -8,6 +8,15 @@
 extern GUI_t GUI;
 
 
+static void calcActiveWindow(Object_Canvas *canvas)
+{
+  canvas->activeWindow.x0 = canvas->x0 + canvas->frameWidth + canvas->penWeight;
+  canvas->activeWindow.y0 = canvas->y0 + canvas->frameWidth + canvas->penWeight;
+  canvas->activeWindow.x1 = canvas->x1 - canvas->frameWidth - canvas->penWeight;
+  canvas->activeWindow.y1 = canvas->y1 - canvas->frameWidth - canvas->penWeight;
+}
+
+
 void SGUI_drawCanvas(unsigned short page, unsigned short	canvasId)
 {
   Object_Canvas *canvas = &GUI.pages[page]->objList.ObjCanvasList[canvasId];
@@ -44,6 +53,8 @@ void SGUI_createCanvas(unsigned short page,
   canvas->penWeight = penWeight;
   canvas->penColor = penColor;
   canvas->action = action;
+
+  calcActiveWindow(canvas);
   
   GUI.pages[page]->objList.ObjCanvasNum++;
 }
@@ -60,12 +71,20 @@ void SGUI_canvasClear(unsigned short page, unsigned short canvasId)
 }
 
 
-void SGUI_canvasChangePenColor(unsigned short page,
-                               unsigned short canvasId,
-                               unsigned short color)
+void SGUI_canvasSetPenColor(unsigned short page,
+                            unsigned short canvasId,
+                            unsigned short color)
 {
   GUI.pages[page]->objList.ObjCanvasList[canvasId].penColor = color;
 }
+
+void SGUI_canvasSetPenWeight(unsigned short page,
+                             unsigned short canvasId,
+                             unsigned short weight)
+{
+  GUI.pages[page]->objList.ObjCanvasList[canvasId].penWeight = weight;
+  calcActiveWindow(&GUI.pages[page]->objList.ObjCanvasList[canvasId]);
+}                            
 
 
 void SGUI_canvasSetPenEraser(unsigned short page, unsigned short	canvasId)
@@ -82,4 +101,10 @@ void SGUI_canvasDrawPoint(unsigned short page, unsigned short	canvasId)
 
   SGUI_getSampleTouch(&x, &y);
   SGUI_LCD_drawFilledCircle(x, y, canvas->penWeight, canvas->penColor);
+}
+
+
+void SGUI_canvasIdle(unsigned short page, unsigned short	canvasId, unsigned short dt)
+{
+  GUI.pages[page]->objList.ObjCanvasList[canvasId].idle = (signed short)dt;
 }

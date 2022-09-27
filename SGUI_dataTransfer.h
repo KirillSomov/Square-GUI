@@ -13,6 +13,10 @@
 void SGUI_setLcdPage(unsigned long page);
 void SGUI_showLcdPage(unsigned long page);
 
+void SGUI_LCD_drawLine(unsigned short x0, unsigned short y0,
+                       unsigned short x1, unsigned short y1,
+                       unsigned short color);
+
 void SGUI_LCD_drawSquare(unsigned short x0, unsigned short y0,
                          unsigned short x1, unsigned short y1,
                          unsigned short rx, unsigned short ry,
@@ -32,7 +36,7 @@ void SGUI_LCD_drawPicture(const unsigned char* picture,
 void SGUI_LCD_printString(char* string,
                           unsigned short x, unsigned short y,
                           unsigned short size,
-                          unsigned short backgroundColor, unsigned short textColor);
+                          signed long backgroundColor, unsigned short textColor);
 
 bool SGUI_sampleTouch(unsigned short* x, unsigned short* y);
 

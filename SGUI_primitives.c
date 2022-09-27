@@ -3,6 +3,27 @@
 #include "SGUI_dataTransfer.h"
 
 
+void SGUI_drawLine(unsigned short x0, unsigned short y0,
+                   unsigned short x1, unsigned short y1,
+                   unsigned short width, unsigned short color)
+{
+  if(x0 == x1)
+  {
+    for(unsigned short i = 0; i < width; i++)
+    {
+      SGUI_LCD_drawLine(x0+i, y0, x1+i, y1, color);
+    }
+  }
+  else
+  {
+    for(unsigned short i = 0; i < width; i++)
+    {
+      SGUI_LCD_drawLine(x0, y0+i, x1, y1+i, color);
+    }
+  }
+}
+
+
 void SGUI_drawFrame(unsigned short x0, unsigned short y0,
                     unsigned short x1, unsigned short y1,
                     unsigned short rx, unsigned short ry,

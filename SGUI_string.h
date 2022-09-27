@@ -10,7 +10,7 @@
 void SGUI_printString(char* string,
                       unsigned short x, unsigned short y,
                       unsigned short size,
-                      unsigned short backgroundColor, unsigned short textColor);
+                      signed long backgroundColor, unsigned short textColor);
 
 
 #endif

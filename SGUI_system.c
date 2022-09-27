@@ -49,6 +49,22 @@ static void SGUI_buttonHandler(void)
   }
 }
 
+static void SGUI_buttonSync(unsigned short dt)
+{
+  for(unsigned short objButNum = 0; objButNum < GUI.pages[GUI.currentPage]->objList.ObjButtonNum; objButNum++)
+  {
+    if(GUI.pages[GUI.currentPage]->objList.ObjButtonList[objButNum].flag_buttonWasClicked == 1)
+    {
+      GUI.pages[GUI.currentPage]->objList.ObjButtonList[objButNum].timerVal += dt;
+      if(GUI.pages[GUI.currentPage]->objList.ObjButtonList[objButNum].timerVal > GUI.pages[GUI.currentPage]->objList.ObjButtonList[objButNum].msDelay)
+      {
+        GUI.pages[GUI.currentPage]->objList.ObjButtonList[objButNum].timerVal = 0;
+        GUI.pages[GUI.currentPage]->objList.ObjButtonList[objButNum].flag_buttonWasClicked = 0;
+      }
+    }
+  }
+}
+
 
 /*static void SGUI_pictureHandler(void)
 {
@@ -92,15 +108,40 @@ static void SGUI_canvasHandler(void)
   {
     for(unsigned short ObjCanvasId = 0; ObjCanvasId < objCanvasAmount; ObjCanvasId++)
     {
-      if((GUI.touchPoint.x < canvas[ObjCanvasId].x0 + canvas[ObjCanvasId].frameWidth) || (GUI.touchPoint.x > canvas[ObjCanvasId].x1 - canvas[ObjCanvasId].frameWidth))
+      if((GUI.touchPoint.x < canvas[ObjCanvasId].activeWindow.x0) || (GUI.touchPoint.x > canvas[ObjCanvasId].activeWindow.x1))
         continue;
-      else if((GUI.touchPoint.y < canvas[ObjCanvasId].y0 + canvas[ObjCanvasId].frameWidth) || (GUI.touchPoint.y > canvas[ObjCanvasId].y1 - canvas[ObjCanvasId].frameWidth))
+      else if((GUI.touchPoint.y < canvas[ObjCanvasId].activeWindow.y0) || (GUI.touchPoint.y > canvas[ObjCanvasId].activeWindow.y1))
         continue;
       else
       {
-        SGUI_canvasDrawPoint(page, ObjCanvasId);
+        if(canvas[ObjCanvasId].idle == 0)
+        {
+          if(canvas[ObjCanvasId].action != 0)
+          {
+            canvas[ObjCanvasId].action();
+          }
+          else
+          {
+            SGUI_canvasDrawPoint(page, ObjCanvasId);
+          }
+        }
         GUI.flag_touch = 0;
         return;
+      }
+    }
+  }
+}
+
+static void SGUI_canvasSync(unsigned short dt)
+{
+  for(unsigned short objCanvasId = 0; objCanvasId < GUI.pages[GUI.currentPage]->objList.ObjCanvasNum; objCanvasId++)
+  {
+    if(GUI.pages[GUI.currentPage]->objList.ObjCanvasList[objCanvasId].idle > 0)
+    {
+      GUI.pages[GUI.currentPage]->objList.ObjCanvasList[objCanvasId].idle -= (signed short)dt;
+      if(GUI.pages[GUI.currentPage]->objList.ObjCanvasList[objCanvasId].idle <= 0)
+      {
+        GUI.pages[GUI.currentPage]->objList.ObjCanvasList[objCanvasId].idle = 0;
       }
     }
   }
@@ -149,18 +190,8 @@ void SGUI_sync(unsigned short dt)
     }
   }
 
-  for(unsigned short objButNum = 0; objButNum < GUI.pages[GUI.currentPage]->objList.ObjButtonNum; objButNum++)
-  {
-    if(GUI.pages[GUI.currentPage]->objList.ObjButtonList[objButNum].flag_buttonWasClicked == 1)
-    {
-      GUI.pages[GUI.currentPage]->objList.ObjButtonList[objButNum].timerVal += dt;
-      if(GUI.pages[GUI.currentPage]->objList.ObjButtonList[objButNum].timerVal > GUI.pages[GUI.currentPage]->objList.ObjButtonList[objButNum].msDelay)
-      {
-        GUI.pages[GUI.currentPage]->objList.ObjButtonList[objButNum].timerVal = 0;
-        GUI.pages[GUI.currentPage]->objList.ObjButtonList[objButNum].flag_buttonWasClicked = 0;
-      }
-    }
-  }
+  SGUI_buttonSync(dt);
+  SGUI_canvasSync(dt);
 
   if(GUI.idle == 0)
   {
