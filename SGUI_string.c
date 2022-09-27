@@ -20,7 +20,7 @@ void SGUI_printString(char* string,
   while(nlR)
   {
     strncpy(strBuf, nlL, nlR-nlL);
-    strBuf[(nlR-nlL)+1] = '\0';
+    strBuf[(nlR-nlL)] = '\0';
     SGUI_LCD_printString(strBuf, x, y, size, backgroundColor, textColor);
     nlL = nlR + 1;
     y+= size;

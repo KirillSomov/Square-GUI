@@ -14,7 +14,7 @@ typedef struct
   unsigned short	frameWidth;
   unsigned short	buttonColor;
   unsigned short	frameColor;
-  char			*str;
+  char *str;
   //const struct fontInfo *fontInfoStruct;
   unsigned short	textColor;
   unsigned short	textMarginX;
