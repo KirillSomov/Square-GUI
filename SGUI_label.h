@@ -14,9 +14,10 @@ typedef struct
   unsigned short	frameWidth;
   unsigned short	labelColor;
   unsigned short	frameColor;
-  char			*str;
+  char *str;
+  unsigned short	fontSize;
   //const struct fontInfo *fontInfoStruct;
-  unsigned short	textColor;
+  unsigned short	fontColor;
   unsigned short	textMarginX;
   unsigned short	textMarginY;
   void 			(*action)(void);
@@ -34,15 +35,17 @@ void	SGUI_createLabel(unsigned short page,
                       unsigned short	labelColor,
                       unsigned short	frameColor,
                       char			*str,
+                      unsigned short	fontSize,
                       unsigned short	textColor,
           //const struct fontInfo *fontInfoStruct,
                       unsigned short	textMarginX,
                       unsigned short	textMarginY,
                       void			(*action)(void));
-void	SGUI_labelChangeText(unsigned short page,
-                          unsigned short	labelId,
-                            char	*str,
-                        unsigned short	textColor/*,
+void SGUI_labelSetText(unsigned short page,
+                       unsigned short labelId,
+                       char *str,
+                       unsigned short	fontSize,
+                       unsigned short fontColor/*,
             const struct fontInfo *fontInfoStruct*/);
 void	SGUI_labelChangeColor(unsigned short page,
                             unsigned short	labelId,

@@ -93,11 +93,11 @@ void	SGUI_buttonChangeText(unsigned short page,
 }
 
 
-void	SGUI_buttonChangeColor(unsigned short page,
-                             unsigned short	buttonId,
-                             unsigned short	buttonColor)
+void SGUI_buttonSetColor(unsigned short page,
+                         unsigned short buttonId,
+                         unsigned short buttonColor)
 {
-  Object_Button *btn = &GUI.pages[page]->objList.ObjButtonList[GUI.pages[page]->objList.ObjButtonNum];
+  Object_Button *btn = &GUI.pages[page]->objList.ObjButtonList[buttonId];
   
   btn->buttonColor = buttonColor;
   
@@ -108,4 +108,19 @@ void	SGUI_buttonChangeColor(unsigned short page,
   
   /*if(btn->str != 0)
     GUI_buttonChangeText(page, buttonNum, btn->str, btn->textColor, btn->fontInfoStruct);*/
+}
+
+
+void SGUI_buttonSetFrameColor(unsigned short page,
+                              unsigned short buttonId,
+                              unsigned short frameColor)
+{
+  Object_Button *btn = &GUI.pages[page]->objList.ObjButtonList[buttonId];
+  
+  btn->frameColor = frameColor;
+  
+  SGUI_drawFrame(btn->x0, btn->y0,
+                 btn->x1, btn->y1,
+                 btn->rx, btn->ry,
+                 btn->frameWidth, btn->frameColor);
 }

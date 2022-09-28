@@ -51,9 +51,12 @@ void	SGUI_buttonChangeText(unsigned short page,
                               char	*str,
                           unsigned short	textColor/*,
               const struct fontInfo *fontInfoStruct*/);
-void	SGUI_buttonChangeColor(unsigned short page,
-                             unsigned short	buttonId,
-                             unsigned short	buttonColor);
+void SGUI_buttonSetColor(unsigned short page,
+                         unsigned short buttonId,
+                         unsigned short buttonColor);
+void SGUI_buttonSetFrameColor(unsigned short page,
+                              unsigned short buttonId,
+                              unsigned short frameColor);
 
 
 #endif

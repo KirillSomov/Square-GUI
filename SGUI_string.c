@@ -1,5 +1,8 @@
 
+#include "SGUI_dataTransfer.h"
 #include "SGUI_string.h"
+#include "string.h"
+#include "stdio.h"
 
 
 static char strBuf[64] = {0};
@@ -29,4 +32,11 @@ void SGUI_printString(char* string,
       SGUI_LCD_printString(nlL, x, y, size, backgroundColor, textColor);
     }
   }
+}
+
+
+char* SGUI_intToStr(int i)
+{
+  sprintf(strBuf, "%d", i);
+  return strBuf;
 }

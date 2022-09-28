@@ -7,6 +7,7 @@
 
 
 #define FONT_SIZE_24 24
+#define FONT_SIZE_32 32
 #define FONT_SIZE_48 48
 
 
