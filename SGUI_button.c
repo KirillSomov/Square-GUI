@@ -36,7 +36,7 @@ void	SGUI_createButton(unsigned short page,
           //const struct fontInfo *fontInfoStruct,
                       unsigned short	textMarginX,
                       unsigned short	textMarginY,
-                      unsigned short		state,
+                      bool inUsage,
                       unsigned short	msDelay,
                       void			(*action)(void))
 {
@@ -56,7 +56,7 @@ void	SGUI_createButton(unsigned short page,
   //btn->fontInfoStruct			=	fontInfoStruct;
   btn->textMarginX					=	textMarginX;
   btn->textMarginY					=	textMarginY;
-  btn->state								=	state;
+  btn->inUsage								=	inUsage;
   btn->msDelay							=	msDelay;
   btn->flag_buttonWasClicked	= 0;
   btn->timerVal 						= 0;
@@ -123,4 +123,12 @@ void SGUI_buttonSetFrameColor(unsigned short page,
                  btn->x1, btn->y1,
                  btn->rx, btn->ry,
                  btn->frameWidth, btn->frameColor);
+}
+
+
+void SGUI_buttonInUsage(unsigned short page,
+                        unsigned short buttonId,
+                        bool inUsage)
+{
+  GUI.pages[page]->objList.ObjButtonList[buttonId].inUsage = inUsage;
 }

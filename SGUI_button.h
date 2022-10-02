@@ -3,6 +3,9 @@
 #define SGUI_BUTTON_H
 
 
+#include "stdbool.h"
+
+
 typedef struct
 {
   unsigned short	x0;
@@ -19,7 +22,7 @@ typedef struct
   unsigned short	textColor;
   unsigned short	textMarginX;
   unsigned short	textMarginY;
-  unsigned short	state;
+  bool inUsage;
   volatile	unsigned long	msDelay;
   
   unsigned short	textLenght;
@@ -43,7 +46,7 @@ void	SGUI_createButton(unsigned short page,
           //const struct fontInfo *fontInfoStruct,
                       unsigned short	textMarginX,
                       unsigned short	textMarginY,
-                      unsigned short		state,
+                      bool inUsage,
                       unsigned short	msDelay,
                       void			(*action)(void));
 void	SGUI_buttonChangeText(unsigned short page,
@@ -57,6 +60,9 @@ void SGUI_buttonSetColor(unsigned short page,
 void SGUI_buttonSetFrameColor(unsigned short page,
                               unsigned short buttonId,
                               unsigned short frameColor);
+void SGUI_buttonInUsage(unsigned short page,
+                        unsigned short buttonId,
+                        bool inUsage);
 
 
 #endif

@@ -28,7 +28,7 @@ static void SGUI_buttonHandler(void)
   {
     for(unsigned short objButNum = 0; objButNum < objButAmount; objButNum++)
     {
-      if(button[objButNum].action != 0)
+      if((button[objButNum].action != 0) && (button[objButNum].inUsage))
       {
         if((GUI.touchPoint.x < button[objButNum].x0) || (GUI.touchPoint.x > button[objButNum].x1))
           continue;
