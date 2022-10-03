@@ -64,9 +64,9 @@ void SGUI_drawFilledCircle(unsigned short x, unsigned short y, unsigned short r,
                            unsigned short frameWidth, unsigned short frameColor,
                            unsigned short fillColor)
 {
-  SGUI_LCD_drawFilledCircle(x, y, r, fillColor);
   if(frameWidth > 0)
   {
-    SGUI_drawCircle(x, y, r, frameWidth, frameColor);
+    SGUI_LCD_drawFilledCircle(x, y, r, frameColor);
   }
+  SGUI_LCD_drawFilledCircle(x, y, r-frameWidth, fillColor);
 }
