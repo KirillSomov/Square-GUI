@@ -55,7 +55,7 @@ void SGUI_drawCircle(unsigned short x, unsigned short y, unsigned short r, unsig
 {
   for(unsigned short i = 0; i < w; i++)
   {
-    SGUI_LCD_drawCircle(x, y, r-w, color);
+    SGUI_LCD_drawCircle(x, y, r-i, color);
   }
 }
 
