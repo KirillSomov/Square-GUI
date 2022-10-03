@@ -27,6 +27,7 @@ void SGUI_LCD_drawFilledSquare(unsigned short x0, unsigned short y0,
                                unsigned short rx, unsigned short ry,
                                unsigned short color);
 
+void SGUI_LCD_drawCircle(unsigned short x, unsigned short y, unsigned short r, unsigned short color);
 void SGUI_LCD_drawFilledCircle(unsigned short x, unsigned short y, unsigned short r, unsigned short color);
 
 void SGUI_LCD_drawPicture(const unsigned char* picture,

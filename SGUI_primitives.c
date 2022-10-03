@@ -49,3 +49,24 @@ void SGUI_drawFilledFrame(unsigned short x0, unsigned short y0,
     SGUI_drawFrame(x0, y0, x1, y1, rx, ry, frameWidth, frameColor);
   }
 }
+
+
+void SGUI_drawCircle(unsigned short x, unsigned short y, unsigned short r, unsigned short w, unsigned short color)
+{
+  for(unsigned short i = 0; i < w; i++)
+  {
+    SGUI_LCD_drawCircle(x, y, r-w, color);
+  }
+}
+
+
+void SGUI_drawFilledCircle(unsigned short x, unsigned short y, unsigned short r,
+                           unsigned short frameWidth, unsigned short frameColor,
+                           unsigned short fillColor)
+{
+  SGUI_LCD_drawFilledCircle(x, y, r, fillColor);
+  if(frameWidth > 0)
+  {
+    SGUI_drawCircle(x, y, r, frameWidth, frameColor);
+  }
+}

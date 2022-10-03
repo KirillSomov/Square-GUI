@@ -20,5 +20,10 @@ void SGUI_drawFilledFrame(unsigned short x0, unsigned short y0,
                           unsigned short frameWidth, unsigned short frameColor,
                           unsigned short fillColor);
 
+void SGUI_drawCircle(unsigned short x, unsigned short y, unsigned short r, unsigned short w, unsigned short color);
+void SGUI_drawFilledCircle(unsigned short x, unsigned short y, unsigned short r,
+                           unsigned short frameWidth, unsigned short frameColor,
+                           unsigned short fillColor);
+
 
 #endif
