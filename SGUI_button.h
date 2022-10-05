@@ -19,7 +19,8 @@ typedef struct
   unsigned short	frameColor;
   char *str;
   //const struct fontInfo *fontInfoStruct;
-  unsigned short	textColor;
+  unsigned short	fontSize;
+  unsigned short	fontColor;
   unsigned short	textMarginX;
   unsigned short	textMarginY;
   bool inUsage;
@@ -42,18 +43,20 @@ void	SGUI_createButton(unsigned short page,
                       unsigned short	buttonColor,
                       unsigned short	frameColor,
                       char			*str,
-                      unsigned short	textColor,
           //const struct fontInfo *fontInfoStruct,
+                      unsigned short	fontSize,
+                      unsigned short	fontColor,
                       unsigned short	textMarginX,
                       unsigned short	textMarginY,
                       bool inUsage,
                       unsigned short	msDelay,
                       void			(*action)(void));
-void	SGUI_buttonChangeText(unsigned short page,
-                            unsigned short	buttonId,
-                              char	*str,
-                          unsigned short	textColor/*,
-              const struct fontInfo *fontInfoStruct*/);
+void SGUI_buttonSetText(unsigned short page,
+                        unsigned short buttonId,
+                        char *str,
+                        unsigned short	fontSize,
+                        unsigned short fontColor/*,
+            const struct fontInfo *fontInfoStruct*/);
 void SGUI_buttonSetColor(unsigned short page,
                          unsigned short buttonId,
                          unsigned short buttonColor);
