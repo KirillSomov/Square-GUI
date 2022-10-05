@@ -24,13 +24,14 @@ typedef struct
   unsigned short	textMarginX;
   unsigned short	textMarginY;
   bool inUsage;
+  bool visibility;
   volatile	unsigned long	msDelay;
   
   unsigned short	textLenght;
   unsigned short	flag_buttonWasClicked;
   unsigned long 	timerVal;
   
-  void (*action)(void);		
+  void (*action)(void);
 }Object_Button;
 
 
@@ -66,6 +67,9 @@ void SGUI_buttonSetFrameColor(unsigned short page,
 void SGUI_buttonInUsage(unsigned short page,
                         unsigned short buttonId,
                         bool inUsage);
+void SGUI_buttonVisibility(unsigned short page,
+                           unsigned short buttonId,
+                           bool visibility);
 
 
 #endif

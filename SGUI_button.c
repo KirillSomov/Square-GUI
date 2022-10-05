@@ -44,18 +44,21 @@ static void clearText(Object_Button *btn)
 void SGUI_drawButton(unsigned short page, unsigned short	buttonId)
 {
   Object_Button *btn = &GUI.pages[page]->objList.ObjButtonList[buttonId];
-  
-  SGUI_drawFilledFrame(btn->x0, btn->y0,
-                       btn->x1, btn->y1,
-                       btn->rx, btn->ry,
-                       btn->frameWidth, btn->frameColor, btn->buttonColor);
-  
-  if(btn->textLenght != 0)
+
+  if(btn->visibility)
   {
-    SGUI_printString(btn->str,
-                     btn->x0+btn->textMarginX, btn->y0+btn->textMarginY,
-                     btn->fontSize,
-                     btn->buttonColor, btn->fontColor);
+    SGUI_drawFilledFrame(btn->x0, btn->y0,
+                         btn->x1, btn->y1,
+                         btn->rx, btn->ry,
+                         btn->frameWidth, btn->frameColor, btn->buttonColor);
+
+    if(btn->textLenght != 0)
+    {
+      SGUI_printString(btn->str,
+                       btn->x0+btn->textMarginX, btn->y0+btn->textMarginY,
+                       btn->fontSize,
+                       btn->buttonColor, btn->fontColor);
+    }
   }
 }
 
@@ -168,3 +171,23 @@ void SGUI_buttonInUsage(unsigned short page,
 {
   GUI.pages[page]->objList.ObjButtonList[buttonId].inUsage = inUsage;
 }
+
+
+void SGUI_buttonVisibility(unsigned short page,
+                           unsigned short buttonId,
+                           bool visibility)
+{
+  Object_Button *btn = &GUI.pages[page]->objList.ObjButtonList[buttonId];
+  btn->visibility = visibility;
+  if(visibility)
+  {
+    SGUI_drawButton(page, buttonId);  
+  }
+  else
+  {
+    SGUI_drawFilledFrame(btn->x0, btn->y0,
+                         btn->x1, btn->y1,
+                         btn->rx, btn->ry,
+                         btn->frameWidth, 0xFFFF, 0xFFFF);    
+  }
+}                          
