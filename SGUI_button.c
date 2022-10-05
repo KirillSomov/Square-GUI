@@ -10,7 +10,25 @@ extern GUI_t GUI;
 
 static void textPositioning(Object_Button *btn)
 {
-  btn->textLenght = strlen(btn->str);
+  unsigned short maxStrLen = 0;
+  unsigned short textHeight = 0;
+
+  for(unsigned short i = 0; btn->str[i] != '\0'; i++)
+  {
+    maxStrLen++;
+    if((btn->str[i] == '\n') || (btn->str[i+1] == '\0'))
+    {
+      textHeight++;
+      if(maxStrLen > btn->textLenght)
+      {
+        btn->textLenght = maxStrLen;
+        maxStrLen = 0;
+      }
+    }
+  }
+
+  btn->textMarginX = (unsigned short)(((btn->x1 - btn->x0 - btn->frameWidth*2) - btn->textLenght*btn->fontSize/2) / 2);
+  btn->textMarginY = (unsigned short)(((btn->y1 - btn->y0 - btn->frameWidth*2) - textHeight*btn->fontSize) / 2);
 }
 
 static void clearText(Object_Button *btn)
@@ -23,7 +41,7 @@ static void clearText(Object_Button *btn)
 }
 
 
-void	SGUI_drawButton(unsigned short page, unsigned short	buttonId)
+void SGUI_drawButton(unsigned short page, unsigned short	buttonId)
 {
   Object_Button *btn = &GUI.pages[page]->objList.ObjButtonList[buttonId];
   
@@ -97,19 +115,12 @@ void SGUI_buttonSetText(unsigned short page,
 {
   Object_Button *btn = &GUI.pages[page]->objList.ObjButtonList[buttonId];
   
-  clearText(btn);
   btn->str = str;
   btn->fontSize = fontSize;
   btn->fontColor = fontColor;
-  //btn->fontInfoStruct	=	fontInfoStruct;
   textPositioning(btn);
-  if(btn->textLenght != 0)
-  {
-    SGUI_printString(btn->str,
-                     btn->x0+btn->textMarginX, btn->y0+btn->textMarginY,
-                     btn->fontSize,
-                     btn->buttonColor, btn->fontColor);
-  }
+  //btn->fontInfoStruct	=	fontInfoStruct;
+  SGUI_drawButton(page, buttonId);
 }
 
 
