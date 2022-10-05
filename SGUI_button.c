@@ -98,6 +98,7 @@ void SGUI_createButton(unsigned short page,
   btn->textMarginX = textMarginX;
   btn->textMarginY = textMarginY;
   btn->inUsage = inUsage;
+  btn->visibility = true;
   btn->msDelay = msDelay;
   btn->flag_buttonWasClicked = 0;
   btn->timerVal = 0;
