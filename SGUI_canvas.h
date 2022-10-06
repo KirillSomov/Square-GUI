@@ -3,6 +3,9 @@
 #define SGUI_CANVAS_H
 
 
+#include "stdbool.h"
+
+
 typedef enum
 {
   Pen_fine = 1,
@@ -37,6 +40,7 @@ typedef struct
   Pen_Weight	penWeight;
   CanvasActiveWindow_t activeWindow;
   signed short idle;
+  bool active;
   void (*action)(void);
 }Object_Canvas;
  
@@ -62,6 +66,10 @@ void SGUI_canvasSetPenWeight(unsigned short page,
 void SGUI_canvasSetPenEraser(unsigned short page, unsigned short	canvasId);
 void SGUI_canvasDrawPoint(unsigned short page, unsigned short	canvasId);
 void SGUI_canvasIdle(unsigned short page, unsigned short	canvasId, unsigned short dt);
+void SGUI_canvasActive(unsigned short page, unsigned short	canvasId, bool active);
+void SGUI_canvasSetFrameColor(unsigned short page,
+                              unsigned short canvasId,
+                              unsigned short frameColor);
 
 
 #endif

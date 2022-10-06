@@ -53,6 +53,7 @@ void SGUI_createCanvas(unsigned short page,
   canvas->penWeight = penWeight;
   canvas->penColor = penColor;
   canvas->action = action;
+  canvas->active = true;
 
   calcActiveWindow(canvas);
   
@@ -107,4 +108,25 @@ void SGUI_canvasDrawPoint(unsigned short page, unsigned short	canvasId)
 void SGUI_canvasIdle(unsigned short page, unsigned short	canvasId, unsigned short dt)
 {
   GUI.pages[page]->objList.ObjCanvasList[canvasId].idle = (signed short)dt;
+}
+
+
+void SGUI_canvasActive(unsigned short page, unsigned short	canvasId, bool active)
+{
+  GUI.pages[page]->objList.ObjCanvasList[canvasId].active = active;
+}
+
+
+void SGUI_canvasSetFrameColor(unsigned short page,
+                              unsigned short canvasId,
+                              unsigned short frameColor)
+{
+  Object_Button *canvas = &GUI.pages[page]->objList.ObjCanvasList[canvasId];
+  
+  canvas->frameColor = frameColor;
+  
+  SGUI_drawFrame(canvas->x0, canvas->y0,
+                 canvas->x1, canvas->y1,
+                 canvas->rx, canvas->ry,
+                 canvas->frameWidth, canvas->frameColor);
 }

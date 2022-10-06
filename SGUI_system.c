@@ -108,7 +108,9 @@ static void SGUI_canvasHandler(void)
   {
     for(unsigned short ObjCanvasId = 0; ObjCanvasId < objCanvasAmount; ObjCanvasId++)
     {
-      if((GUI.touchPoint.x < canvas[ObjCanvasId].activeWindow.x0) || (GUI.touchPoint.x > canvas[ObjCanvasId].activeWindow.x1))
+      if(!canvas[ObjCanvasId].active)
+        continue;
+      else if((GUI.touchPoint.x < canvas[ObjCanvasId].activeWindow.x0) || (GUI.touchPoint.x > canvas[ObjCanvasId].activeWindow.x1))
         continue;
       else if((GUI.touchPoint.y < canvas[ObjCanvasId].activeWindow.y0) || (GUI.touchPoint.y > canvas[ObjCanvasId].activeWindow.y1))
         continue;
